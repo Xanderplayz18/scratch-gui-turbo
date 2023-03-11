@@ -17,8 +17,22 @@
     margin: 8px 0;
 }
 
-.text-input {
-    margin-bottom: 1.5rem;
+.type-selector-container {
+    display: flex;
+}
+.type-selector {
+    cursor: pointer;
+    border-bottom: 4px solid $ui-tertiary;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 16px;
+    padding: 8px 0;
+}
+.type-selector[data-active="true"] {
+    border-color: $motion-primary;
+}
+
+.url-input {
     width: 100%;
     border: 1px solid $ui-black-transparent;
     border-radius: 5px;
@@ -27,12 +41,17 @@
     color: $text-primary-transparent;
     font-size: .875rem;
 }
-[theme="dark"] .text-input {
+[theme="dark"] .url-input {
     background: $ui-secondary;
     color: white;
 }
 
+.file-input {
+
+}
+
 .button-row {
+    margin: 8px 0;
     display: flex;
     justify-content: flex-end;
 }
@@ -46,4 +65,7 @@
     font-size: 0.85rem;
     color: $ui-white;
     background: $motion-primary;
+}
+.load-button:disabled {
+    opacity: 0.8;
 }
