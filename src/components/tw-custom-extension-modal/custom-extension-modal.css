@@ -13,8 +13,13 @@
     background: $ui-primary;
 }
 
-.body p {
+.body p,
+.unsandboxed-container,
+.button-row,
+.url-input,
+.file-input {
     margin: 8px 0;
+    display: block;
 }
 
 .type-selector-container {
@@ -50,8 +55,15 @@
 
 }
 
+.unsandboxed-container {
+    display: block;
+}
+
+.danger {
+    font-weight: bold;
+}
+
 .button-row {
-    margin: 8px 0;
     display: flex;
     justify-content: flex-end;
 }

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import log from '../lib/log';
 import CustomExtensionModalComponent from '../components/tw-custom-extension-modal/custom-extension-modal.jsx';
 import {closeCustomExtensionModal} from '../reducers/modals';
+import {manuallyTrustExtension} from './tw-security-manager.jsx';
 
 class CustomExtensionModal extends React.Component {
     constructor (props) {
@@ -12,6 +13,7 @@ class CustomExtensionModal extends React.Component {
         bindAll(this, [
             'handleChangeFile',
             'handleChangeURL',
+            'handleChangeUnsandboxed',
             'handleClose',
             'handleKeyDown',
             'handleLoadExtension',
@@ -21,7 +23,8 @@ class CustomExtensionModal extends React.Component {
         this.state = {
             files: null,
             type: 'url',
-            url: ''
+            url: '',
+            unsandboxed: false
         };
     }
     getExtensionURL () {
@@ -58,6 +61,11 @@ class CustomExtensionModal extends React.Component {
             url: e.target.value
         });
     }
+    handleChangeUnsandboxed (e) {
+        this.setState({
+            unsandboxed: e.target.checked
+        });
+    }
     handleClose () {
         this.props.onClose();
     }
@@ -71,6 +79,9 @@ class CustomExtensionModal extends React.Component {
         this.handleClose();
         try {
             const url = await this.getExtensionURL();
+            if (this.state.unsandboxed) {
+                manuallyTrustExtension(url);
+            }
             await this.props.vm.extensionManager.loadExtensionURL(url);
         } catch (err) {
             log.error(err);
@@ -95,6 +106,7 @@ class CustomExtensionModal extends React.Component {
                 canLoadExtension={this.hasValidInput()}
                 onChangeFile={this.handleChangeFile}
                 onChangeURL={this.handleChangeURL}
+                onChangeUnsandboxed={this.handleChangeUnsandboxed}
                 onClose={this.handleClose}
                 onKeyDown={this.handleKeyDown}
                 onLoadExtension={this.handleLoadExtension}
@@ -102,6 +114,7 @@ class CustomExtensionModal extends React.Component {
                 onSwitchToURL={this.handleSwitchToURL}
                 type={this.state.type}
                 url={this.state.url}
+                unsandboxed={this.state.unsandboxed}
             />
         );
     }

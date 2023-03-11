@@ -7,6 +7,15 @@ import SecurityManagerModal from '../components/tw-security-manager-modal/securi
 import SecurityModals from '../lib/tw-security-manager-constants';
 
 /**
+ * Set of extension URLs that the user has manually trusted to load unsandboxed.
+ */
+const extensionsTrustedByUser = new Set();
+
+const manuallyTrustExtension = url => {
+    extensionsTrustedByUser.add(url);
+};
+
+/**
  * Trusted extensions are loaded automatically and without a sandbox.
  * @param {string} url URL as a string.
  * @returns {boolean} True if the extension can is trusted
@@ -16,7 +25,9 @@ const isTrustedExtension = url => (
     url.startsWith('https://extensions.turbowarp.org/') ||
 
     // For development.
-    url.startsWith('http://localhost:8000/')
+    url.startsWith('http://localhost:8000/') ||
+
+    extensionsTrustedByUser.has(url)
 );
 
 /**
@@ -293,7 +304,12 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => ({});
 
-export default connect(
+const ConnectedSecurityManagerComponent = connect(
     mapStateToProps,
     mapDispatchToProps
 )(TWSecurityManagerComponent);
+
+export {
+    ConnectedSecurityManagerComponent as default,
+    manuallyTrustExtension
+};
