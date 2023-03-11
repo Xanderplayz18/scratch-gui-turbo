@@ -16,8 +16,7 @@
 .body p,
 .unsandboxed-container,
 .button-row,
-.url-input,
-.file-input {
+.url-input {
     margin: 8px 0;
     display: block;
 }
@@ -49,10 +48,6 @@
 [theme="dark"] .url-input {
     background: $ui-secondary;
     color: white;
-}
-
-.file-input {
-
 }
 
 .unsandboxed-container {

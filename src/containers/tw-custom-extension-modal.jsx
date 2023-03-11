@@ -18,12 +18,16 @@ class CustomExtensionModal extends React.Component {
             'handleKeyDown',
             'handleLoadExtension',
             'handleSwitchToFile',
-            'handleSwitchToURL'
+            'handleSwitchToURL',
+            'handleDragOver',
+            'handleDragLeave',
+            'handleDrop'
         ]);
         this.state = {
             files: null,
             type: 'url',
             url: '',
+            file: null,
             unsandboxed: false
         };
     }
@@ -33,11 +37,10 @@ class CustomExtensionModal extends React.Component {
         }
         if (this.state.type === 'file') {
             return new Promise((resolve, reject) => {
-                const file = this.state.files[0];
                 const reader = new FileReader();
                 reader.onload = () => resolve(reader.result);
                 reader.onerror = () => reject(new Error('Could not read extension as data URL'));
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(this.state.file);
             });
         }
         return Promise.reject(new Error('Unknown type'));
@@ -47,13 +50,13 @@ class CustomExtensionModal extends React.Component {
             return !!this.state.url;
         }
         if (this.state.type === 'file') {
-            return !!this.state.files;
+            return !!this.state.file;
         }
         return false;
     }
-    handleChangeFile (e) {
+    handleChangeFile (file) {
         this.setState({
-            files: e.target.files
+            file
         });
     }
     handleChangeURL (e) {
@@ -91,8 +94,7 @@ class CustomExtensionModal extends React.Component {
     }
     handleSwitchToFile () {
         this.setState({
-            type: 'file',
-            files: null
+            type: 'file'
         });
     }
     handleSwitchToURL () {
@@ -100,21 +102,44 @@ class CustomExtensionModal extends React.Component {
             type: 'url'
         });
     }
+    handleDragOver (e) {
+        if (e.dataTransfer.types.includes('Files')) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        }
+    }
+    handleDragLeave () {
+
+    }
+    handleDrop (e) {
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            e.preventDefault();
+            this.setState({
+                type: 'file',
+                file
+            });
+        }
+    }
     render () {
         return (
             <CustomExtensionModalComponent
                 canLoadExtension={this.hasValidInput()}
-                onChangeFile={this.handleChangeFile}
-                onChangeURL={this.handleChangeURL}
-                onChangeUnsandboxed={this.handleChangeUnsandboxed}
-                onClose={this.handleClose}
-                onKeyDown={this.handleKeyDown}
-                onLoadExtension={this.handleLoadExtension}
+                type={this.state.type}
                 onSwitchToFile={this.handleSwitchToFile}
                 onSwitchToURL={this.handleSwitchToURL}
-                type={this.state.type}
+                file={this.state.file}
+                onChangeFile={this.handleChangeFile}
+                onDragOver={this.handleDragOver}
+                onDragLeave={this.handleDragLeave}
+                onDrop={this.handleDrop}
                 url={this.state.url}
+                onChangeURL={this.handleChangeURL}
+                onKeyDown={this.handleKeyDown}
                 unsandboxed={this.state.unsandboxed}
+                onChangeUnsandboxed={this.handleChangeUnsandboxed}
+                onLoadExtension={this.handleLoadExtension}
+                onClose={this.handleClose}
             />
         );
     }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
+import FileInput from './file-input.jsx';
 import styles from './custom-extension-modal.css';
 
 const messages = defineMessages({
@@ -20,7 +21,12 @@ const CustomExtensionModal = props => (
         contentLabel={props.intl.formatMessage(messages.title)}
         id="customExtensionModal"
     >
-        <Box className={styles.body}>
+        <Box
+            className={styles.body}
+            onDragOver={props.onDragOver}
+            onDragLeave={props.onDragLeave}
+            onDrop={props.onDrop}
+        >
             <div className={styles.typeSelectorContainer}>
                 <div
                     className={styles.typeSelector}
@@ -91,11 +97,10 @@ const CustomExtensionModal = props => (
                             id="tw.customExtensionModal.promptFile"
                         />
                     </p>
-                    <input
-                        type="file"
+                    <FileInput
                         accept=".js"
-                        className={styles.fileInput}
                         onChange={props.onChangeFile}
+                        file={props.file}
                     />
                 </React.Fragment>
             )}
@@ -146,17 +151,21 @@ const CustomExtensionModal = props => (
 CustomExtensionModal.propTypes = {
     intl: intlShape,
     canLoadExtension: PropTypes.bool.isRequired,
-    onChangeFile: PropTypes.func.isRequired,
-    onChangeURL: PropTypes.func.isRequired,
-    onChangeUnsandboxed: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onKeyDown: PropTypes.func.isRequired,
-    onLoadExtension: PropTypes.func.isRequired,
+    type: PropTypes.oneOf(['url', 'file']).isRequired,
     onSwitchToFile: PropTypes.func.isRequired,
     onSwitchToURL: PropTypes.func.isRequired,
-    type: PropTypes.oneOf(['url', 'file']).isRequired,
+    file: PropTypes.instanceOf(File),
+    onChangeFile: PropTypes.func.isRequired,
+    onDragOver: PropTypes.func.isRequired,
+    onDragLeave: PropTypes.func.isRequired,
+    onDrop: PropTypes.func.isRequired,
     url: PropTypes.string.isRequired,
-    unsandboxed: PropTypes.bool.isRequired
+    onChangeURL: PropTypes.func.isRequired,
+    onKeyDown: PropTypes.func.isRequired,
+    unsandboxed: PropTypes.bool.isRequired,
+    onChangeUnsandboxed: PropTypes.func.isRequired,
+    onLoadExtension: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired
 };
 
 export default injectIntl(CustomExtensionModal);
