@@ -1,0 +1,49 @@
+@import "../../css/colors.css";
+
+.modal-content {
+    width: 400px;
+}
+
+.body {
+    background: $ui-white;
+    padding: 1.5rem 2.25rem;
+}
+[theme="dark"] .body {
+    color: $text-primary;
+    background: $ui-primary;
+}
+
+.body p {
+    margin: 8px 0;
+}
+
+.text-input {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 5px;
+    padding: 0 1rem;
+    height: 3rem;
+    color: $text-primary-transparent;
+    font-size: .875rem;
+}
+[theme="dark"] .text-input {
+    background: $ui-secondary;
+    color: white;
+}
+
+.button-row {
+    display: flex;
+    justify-content: flex-end;
+}
+.load-button {
+    font: inherit;
+    color: inherit;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid $ui-black-transparent;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: $ui-white;
+    background: $motion-primary;
+}
