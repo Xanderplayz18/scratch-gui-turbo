@@ -19,6 +19,6 @@ jobs:
         node-version: 10.x
     - run: npm ci
     - run: npm run build
-    - run: npm run deploy
     - run: git config --global user.email "yes@nope.com"
     - run: git config --global user.name "Yes Nope"
+    - run: npm run deploy
