@@ -19,4 +19,4 @@ jobs:
         node-version: 10.x
     - run: npm ci
     - run: npm run build
-    - run: npm run test:unit
+    - run: npm run deploy
